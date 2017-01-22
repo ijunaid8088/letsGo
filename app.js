@@ -6,7 +6,7 @@ class Channel extends React.Component{
   onClick(){
     console.log("I am clicked", this.props.name);
   }
-  render() {
+  render(){
     return (
       <li onClick={this.onClick.bind(this)}>{this.props.name}</li>
     );
@@ -14,7 +14,7 @@ class Channel extends React.Component{
 }
 
 class ChannelList extends React.Component{
-  render() {
+  render(){
     return (
       <ul>
         {this.props.channels.map( channel => {
@@ -28,5 +28,49 @@ class ChannelList extends React.Component{
   }
 }
 
-ReactDOM.render(<ChannelList channels={channels}/>,
+class ChannelForm extends React.Component{
+  constructor(props){
+    super(props);
+    this.state = {};
+  }
+
+  onSubmit(e){
+    let {channelName} = this.state;
+    channels.push({
+      name: channelName
+    });
+    this.setState({
+      channelName: ''
+    });
+    console.log(channelName);
+    e.preventDefault();
+  }
+
+  onChange(e){
+    this.setState({
+      channelName: e.target.value
+    });
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.onSubmit.bind(this)}>
+        <input onChange={this.onChange.bind(this)} type="text" value={this.state.channelName}/>
+      </form>
+    );
+  }
+}
+
+class ChannelSection extends React.Component{
+  render() {
+    return (
+      <div>
+        <ChannelList channels={channels}/>
+        <ChannelForm />
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(<ChannelSection />,
   document.getElementById('app'));
